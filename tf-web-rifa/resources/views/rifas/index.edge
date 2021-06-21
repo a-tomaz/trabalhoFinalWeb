@@ -1,0 +1,26 @@
+@layout('layout/app')
+
+@section('content')
+  <h2>Suas Rifas</h2>
+  <a href="{{ route('rifas.create') }}" class="btn btn-primary">Nova Rifa</a>
+  <ul class="list-group mt-3">
+    @each(rifa in rifas)
+      <li class="list-group-item d-flex justify-content-between">
+        <div class="name">{{ list.name }}</div>
+        <div class="actions">
+          <a href="{{ route('rifas.bilhetes.index', { rifa_id: rifa.id }) }}" class="btn btn-primary">Visualizar</a>
+          <a href="{{ route('rifas.edit', { id: rifa.id }) }}" class="btn btn-primary">Editar</a>
+          <form
+            style="display: inline;"
+            method="post"
+            action="{{
+              route('rifas.destroy', { id: rifa.id, qs: { _method: 'DELETE' } })
+            }}">
+              {{ csrfField() }}
+              <button type="submit" class="btn btn-primary">Apagar</button>
+          </form>
+        </div>
+      </li>
+    @endeach
+  </ul>
+@endsection

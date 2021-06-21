@@ -1,0 +1,13 @@
+@layout('layout/app')
+
+@section('content')
+  <h2>Nova Tarefa</h2>
+  <form action="{{ route('lists.tasks.store', { list_id: list.id }) }}" method="POST">
+    {{ csrfField() }}
+    @include('tasks/form')
+    <div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <a href="{{ route('lists.tasks.index', { list_id: list.id }) }}" class="btn btn-link">Voltar</a>
+    </div>
+  </form>
+@endsection

@@ -1,0 +1,13 @@
+@layout('layout/app')
+
+@section('content')
+  <h2>Nova Lista</h2>
+  <form action="{{ route('lists.store') }}" method="POST">
+    {{ csrfField() }}
+    @include('lists/form')
+    <div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <a href="{{ route('lists.index') }}" class="btn btn-link">Voltar</a>
+    </div>
+  </form>
+@endsection

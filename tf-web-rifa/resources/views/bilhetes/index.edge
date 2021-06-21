@@ -1,0 +1,53 @@
+@layout('layout/app')
+
+@section('content')
+  <h2>{{ list.name }}</h2>
+  <div class="mb-3">
+    <a href="{{ route('lists.tasks.create', { list_id: list.id }) }}" class="btn btn-primary">Nova Tarefa</a>
+  </div>
+  <div class="share">
+    <form action="{{ route('lists.share', { id: list.id }) }}" method="POST">
+      {{ csrfField() }}
+      <div class="mb-3">
+        <select class="form-select" name="user_id">
+          <option selected>Selecione um usuário para compartilhar...</option>
+          @each(user in usersToShare)
+            <option value="{{ user.id }}">{{ user.name }}</option>
+          @endeach
+        </select>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Compartilhar</button>
+      </div>
+    </form>
+  </div>
+  <ul class="list-group mt-3">
+    @each(task in tasks)
+      <li class="list-group-item d-flex justify-content-between">
+        <div class="title">
+        @if(task.done)
+          <del>{{ task.title }}</del>
+        @else
+          {{ task.title }}
+        @endif
+        </div>
+        <div class="actions">
+          <a href="{{ route('lists.tasks.show', { id: task.id, list_id: list.id }) }}" class="btn btn-primary">Visualizar</a>
+          <a href="{{ route('lists.tasks.done', { id: task.id, list_id: list.id }) }}" class="btn btn-primary">
+            {{ task.done ? 'Desfazer' : 'Fazer' }}
+          </a>
+          <a href="{{ route('lists.tasks.edit', { id: task.id, list_id: list.id }) }}" class="btn btn-primary">Editar</a>
+          <form
+            style="display: inline;"
+            method="post"
+            action="{{
+              route('lists.tasks.destroy', { id: task.id, list_id: list.id, qs: { _method: 'DELETE' } })
+            }}">
+              {{ csrfField() }}
+              <button type="submit" class="btn btn-primary">Apagar</button>
+          </form>
+        </div>
+      </li>
+    @endeach
+  </ul>
+@endsection
